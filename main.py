@@ -42,15 +42,15 @@ wind_speed = response['wind']['speed']
 cloudiness = response['clouds']['all']
 
 if description == "overcast clouds":
-    cloud_icon = './icons/Cloudy.png'
+    cloud_icon = './assets/Cloudy.png'
 if description == "broken clouds":
-    cloud_icon = './icons/Cloudy.png'
+    cloud_icon = './assets/Cloudy.png'
 if description == "scattered clouds":
-    cloud_icon = './icons/Cloudy.png'
+    cloud_icon = './assets/Cloudy.png'
 if description == "few clouds":
-    cloud_icon = './icons/Cloudy.png'
+    cloud_icon = './assets/Cloudy.png'
 if description == "clear sky":
-    cloud_icon = './icons/Sunny.png'
+    cloud_icon = './assets/Sunny.png'
 
 
 def main(page: ft.Page):
@@ -75,7 +75,7 @@ def main(page: ft.Page):
             gradient=LinearGradient(
                 begin=alignment.bottom_left,
                 end=alignment.top_right,
-                colors=["lightblue500", "lightblue900"],
+                colors=["purple500", "pink400"],
             ),
             border_radius=32,
             animate=animation.Animation(duration=400, curve="decelerate"),
@@ -147,7 +147,7 @@ def main(page: ft.Page):
                                     controls=[
                                         Container(
                                             alignment=alignment.center,
-                                            content=Image('./icons/Wind.png'),
+                                            content=Image('./assets/Wind.png'),
                                             width=60,
                                             height=60,
                                         ),
@@ -163,7 +163,7 @@ def main(page: ft.Page):
                                     controls=[
                                         Container(
                                             alignment=alignment.center,
-                                            content=Image('./icons/Humidity.png'),
+                                            content=Image('./assets/Humidity.png'),
                                             width=60,
                                             height=60,
                                         ),
@@ -179,7 +179,7 @@ def main(page: ft.Page):
                                     controls=[
                                         Container(
                                             alignment=alignment.center,
-                                            content=Image('./icons/Thermometer.png'),
+                                            content=Image('./assets/Thermometer.png'),
                                             width=60,
                                             height=60,
                                         ),
@@ -200,7 +200,7 @@ def main(page: ft.Page):
                                     controls=[
                                         Container(
                                             alignment=alignment.center,
-                                            content=Image('./icons/Sunrise.png'),
+                                            content=Image('./assets/Sunrise.png'),
                                             width=60,
                                             height=60,
                                         ),
@@ -216,7 +216,7 @@ def main(page: ft.Page):
                                     controls=[
                                         Container(
                                             alignment=alignment.center,
-                                            content=Image('./icons/Sunset.png'),
+                                            content=Image('./assets/Sunset.png'),
                                             width=60,
                                             height=60,
                                         ),
@@ -232,7 +232,7 @@ def main(page: ft.Page):
                                     controls=[
                                         Container(
                                             alignment=alignment.center,
-                                            content=Image('./icons/Cloudy.png'),
+                                            content=Image('./assets/Cloudy.png'),
                                             width=60,
                                             height=60,
                                         ),
@@ -261,4 +261,4 @@ def main(page: ft.Page):
 
 
 if __name__ == "__main__":
-    ft.app(target=main, assets_dir='icons')
+    ft.app(target=main, assets_dir='assets')
