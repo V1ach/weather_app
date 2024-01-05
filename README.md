@@ -11,7 +11,7 @@ Used libraries: flet, requests, datetime, math
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-That's how it look right now (version 0.0.3)
+That's how my program looks right now (version 0.0.3)
 
 <img width="349" alt="fnTJF1v3pd" src="https://github.com/V1ach/weather_app/assets/53580104/c5e24f3f-5860-46f2-9f07-2fb4c2c82763">
 
