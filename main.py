@@ -10,7 +10,13 @@ CITY = "Minsk"
 COUNTRY = "BY"
 days_en = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 days_ru = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+#временный костыль для будущей смены языков
+days = days_en
+lang = "en"
 
+#ебанутый костыль для вывода сегодняшнего и 3х следующих дней (форма запроса responce['daily'][index]['dt'] не работает
+#weekday = datetime.date.today().weekday()
+#day = [calendar.day_name[(weekday + i) % 7] for i in range(4)]
 
 def k_to_c_f(k):
     c = k - 273.15
@@ -20,6 +26,7 @@ def k_to_c_f(k):
 
 url = BASE_URL + "appid=" + API_KEY + "&q=" + CITY
 response = requests.get(url).json()
+response2 = requests.get(f"http://api.openweathermap.org/data/2.5/forecast/daily?lat=53.9&lon=27.5667&cnt=7&appid={API_KEY}").json()
 
 temp_k = response['main']['temp']
 temp_c, temp_f = k_to_c_f(temp_k)
@@ -61,13 +68,24 @@ def main(page: ft.Page):
     page.window_resizable = False
     page.update()
 
+
+#language switch
+    def _language():
+        #временный костыль
+        if lang == "en":
+            days = days_en
+        if lang == "ru":
+            days = days_ru
+
+#animation
     def _expand(e):
+        #!!! make sure to change the control index when doing the bottom portion of the app
         if e.data == "true":
-            _c.content.controls[0].height = 500
-            _c.content.controls[0].update()
+            _c.content.controls[1].height = 500
+            _c.content.controls[1].update()
         else:
-            _c.content.controls[0].height = 640 * 0.6
-            _c.content.controls[0].update()
+            _c.content.controls[1].height = 640 * 0.6
+            _c.content.controls[1].update()
 
     def _top():
         top = Container(
@@ -248,13 +266,65 @@ def main(page: ft.Page):
         )
         return top
 
+# bottom data
+    def _bot_data():
+        _bot_data = []
+        #range is a number of days for forecast => limited by the API key
+        for index in range(1, 8):
+            _bot_data.append(
+                Row(
+                    spacing=5,
+                    alignment="spaceBetween",
+                    controls=[
+                        Row(
+                            expand=1,
+                            alignment="start",
+                            controls=[
+                                Container(
+                                    alignment=alignment.center,
+                                    content=Text(
+                                        #week day display
+                                        #datetime.datetime.weekday(
+                                            #datetime.datetime.fromtimestamp(
+                                               # response2['daily'][index]['dt']
+                                           # )
+                                     #   )
+                                    )
+                                )
+                            ]
+                        )
+                    ]
+                )
+            )
+        return _bot_data
+    def _bottom():
+        _bot_column = Column(
+            alignment="center",
+            horizontal_alignment="center",
+            spacing=25,
+        )
+
+        for data in _bot_data():
+            _bot_column.controls.append(data)
+
+
+        bottom = Container(
+            padding=padding.only(top=280, left=20, right=20, bottom=20),
+            content=_bot_column
+        )
+        return bottom
+
+
     _c = Container(
         width=480,
         height=580,
         border_radius=32,
         bgcolor='grey900',
         padding=12,
-        content=Stack(width=240, height=320, controls=[_top()]),
+        content=Stack(width=240, height=320, controls=[
+            #first control is place at the bottom of the stack
+            _bottom(),
+            _top()]),
     )
 
     page.add(_c)
@@ -262,3 +332,4 @@ def main(page: ft.Page):
 
 if __name__ == "__main__":
     ft.app(target=main, assets_dir='assets')
+
