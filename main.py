@@ -8,25 +8,25 @@ API_KEY = "32b2fb4e348d104cd7df383d1c2918b6"
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
 CITY = "Minsk"
 COUNTRY = "BY"
+lat = "33.44"
+lon = "-94.04"
 days_en = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 days_ru = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
 #временный костыль для будущей смены языков
 days = days_en
 lang = "en"
+languages = ['en', 'ru', 'fr', 'gr', 'jp']
 
-#ебанутый костыль для вывода сегодняшнего и 3х следующих дней (форма запроса responce['daily'][index]['dt'] не работает
-#weekday = datetime.date.today().weekday()
-#day = [calendar.day_name[(weekday + i) % 7] for i in range(4)]
 
 def k_to_c_f(k):
     c = k - 273.15
-    f = c * (9/5) + 32
+    f = c * (9 / 5) + 32
     return c, f
 
 
 url = BASE_URL + "appid=" + API_KEY + "&q=" + CITY
 response = requests.get(url).json()
-response2 = requests.get(f"http://api.openweathermap.org/data/2.5/forecast/daily?lat=53.9&lon=27.5667&cnt=7&appid={API_KEY}").json()
+response2 = requests.get(f"https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=hourly,minutely&appid={API_KEY}").json()
 
 temp_k = response['main']['temp']
 temp_c, temp_f = k_to_c_f(temp_k)
@@ -68,8 +68,7 @@ def main(page: ft.Page):
     page.window_resizable = False
     page.update()
 
-
-#language switch
+    #language switch
     def _language():
         #временный костыль
         if lang == "en":
@@ -77,7 +76,7 @@ def main(page: ft.Page):
         if lang == "ru":
             days = days_ru
 
-#animation
+    #animation
     def _expand(e):
         #!!! make sure to change the control index when doing the bottom portion of the app
         if e.data == "true":
@@ -266,7 +265,7 @@ def main(page: ft.Page):
         )
         return top
 
-# bottom data
+    # bottom data
     def _bot_data():
         _bot_data = []
         #range is a number of days for forecast => limited by the API key
@@ -284,11 +283,11 @@ def main(page: ft.Page):
                                     alignment=alignment.center,
                                     content=Text(
                                         #week day display
-                                        #datetime.datetime.weekday(
-                                            #datetime.datetime.fromtimestamp(
-                                               # response2['daily'][index]['dt']
-                                           # )
-                                     #   )
+                                        dt.datetime.weekday(
+                                        dt.datetime.fromtimestamp(
+                                            response2['daily'][index]['dt']
+                                        )
+                                        )
                                     )
                                 )
                             ]
@@ -297,6 +296,7 @@ def main(page: ft.Page):
                 )
             )
         return _bot_data
+
     def _bottom():
         _bot_column = Column(
             alignment="center",
@@ -307,13 +307,11 @@ def main(page: ft.Page):
         for data in _bot_data():
             _bot_column.controls.append(data)
 
-
         bottom = Container(
             padding=padding.only(top=280, left=20, right=20, bottom=20),
             content=_bot_column
         )
         return bottom
-
 
     _c = Container(
         width=480,
@@ -332,4 +330,3 @@ def main(page: ft.Page):
 
 if __name__ == "__main__":
     ft.app(target=main, assets_dir='assets')
-
