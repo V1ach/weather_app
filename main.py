@@ -6,16 +6,20 @@ import math
 
 API_KEY = "32b2fb4e348d104cd7df383d1c2918b6"
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
-CITY = "Minsk"
-COUNTRY = "BY"
-lat = "33.44"
-lon = "-94.04"
+
 days_en = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 days_ru = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
-#временный костыль для будущей смены языков
+languages = ['en', 'ru', 'fr', 'gr', 'jp']
+
+temp_types = ['C', 'F']
+temp_type = temp_types[0]
+#временный костыль
+CITY = "Minsk"
+COUNTRY = "BY"
+lat = "53.9"
+lon = "27.6"
 days = days_en
 lang = "en"
-languages = ['en', 'ru', 'fr', 'gr', 'jp']
 
 
 def k_to_c_f(k):
@@ -49,15 +53,15 @@ wind_speed = response['wind']['speed']
 cloudiness = response['clouds']['all']
 
 if description == "overcast clouds":
-    cloud_icon = './assets/Cloudy.png'
+    cloud_icon = './assets/Clouds.png'
 if description == "broken clouds":
-    cloud_icon = './assets/Cloudy.png'
+    cloud_icon = './assets/Clouds.png'
 if description == "scattered clouds":
-    cloud_icon = './assets/Cloudy.png'
+    cloud_icon = './assets/Clouds.png'
 if description == "few clouds":
-    cloud_icon = './assets/Cloudy.png'
+    cloud_icon = './assets/Clouds.png'
 if description == "clear sky":
-    cloud_icon = './assets/Sunny.png'
+    cloud_icon = './assets/Clear.png'
 
 
 def main(page: ft.Page):
@@ -131,12 +135,12 @@ def main(page: ft.Page):
                                 ]
                             ),
                             Column(
-                                spacing=6,
+                                spacing=0,
                                 horizontal_alignment='center',
                                 controls=[
                                     Text(
-                                        "Today",
-                                        size=18,
+                                        "Now",
+                                        size=24,
                                         text_align='center',
                                     ),
                                     Row(
@@ -249,7 +253,7 @@ def main(page: ft.Page):
                                     controls=[
                                         Container(
                                             alignment=alignment.center,
-                                            content=Image('./assets/Cloudy.png'),
+                                            content=Image('./assets/Clouds.png'),
                                             width=60,
                                             height=60,
                                         ),
@@ -282,12 +286,59 @@ def main(page: ft.Page):
                                 Container(
                                     alignment=alignment.center,
                                     content=Text(
+                                        days[
                                         #week day display
-                                        dt.datetime.weekday(
-                                        dt.datetime.fromtimestamp(
-                                            response2['daily'][index]['dt']
-                                        )
-                                        )
+                                            dt.datetime.weekday(
+                                                dt.datetime.fromtimestamp(
+                                                   response2['daily'][index]['dt']
+                                                )
+                                            )
+                                        ]
+                                    )
+                                )
+                            ]
+                        ),
+                        Row(
+                            expand=1,
+                            controls=[
+                                Container(
+                                    content=Row(
+                                        alignment="start",
+                                        controls=[
+                                            Container(
+                                                width=20, height=20, alignment=alignment.center_left, content=Image(
+                                                    src=f"./assets/{response2['daily'][index]['weather'][0]['main'].lower()}.png"
+                                                )
+                                            ),
+                                            Text(
+                                                response2["daily"][index]["weather"][0]["main"],
+                                                size=12,
+                                                color="white54",
+                                                text_align="center",
+                                            )
+                                        ]
+                                    )
+                                )
+                            ]
+                        ),
+                        Row(
+                            expand=1,
+                            alignment="end",
+                            controls=[
+                                Container(
+                                    alignment=alignment.center,
+                                    content=Row(
+                                        alignment="center",
+                                        spacing=5,
+                                        controls=[
+                                            Container(
+                                                width=20,
+                                                content=Text(
+                                                    int(response2["daily"][index]["temp"]["day"]-273.15),
+                                                    text_align="center"
+                                                ),
+                                            )
+                                        ]
                                     )
                                 )
                             ]
@@ -308,7 +359,7 @@ def main(page: ft.Page):
             _bot_column.controls.append(data)
 
         bottom = Container(
-            padding=padding.only(top=280, left=20, right=20, bottom=20),
+            padding=padding.only(top=400, left=20, right=20, bottom=20),
             content=_bot_column
         )
         return bottom
