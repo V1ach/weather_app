@@ -9,7 +9,7 @@ BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
 
 days_en = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 days_ru = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
-languages = ['en', 'ru', 'fr', 'gr', 'jp']
+languages = ['en', 'ru', 'fr', 'gr', 'jp', 'cn']
 
 temp_types = ['C', 'F']
 temp_type = temp_types[0]
@@ -307,7 +307,7 @@ def main(page: ft.Page):
                                         controls=[
                                             Container(
                                                 width=20, height=20, alignment=alignment.center_left, content=Image(
-                                                    src=f"./assets/{response2['daily'][index]['weather'][0]['main'].lower()}.png"
+                                                    #src=f"./assets/{response2['daily'][index]['weather'][0]['main'].lower()}.png"
                                                 )
                                             ),
                                             Text(
