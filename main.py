@@ -4,7 +4,7 @@ import requests
 import datetime as dt
 import math
 
-API_KEY = "32b2fb4e348d104cd7df383d1c2918b6"
+API_KEY = ""
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
 
 days_en = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
